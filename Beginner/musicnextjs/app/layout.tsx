@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -19,15 +20,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
+}: Readonly<{  //this is a typescript.
+  children: React.ReactNode; //React type for the children prop, which can be any valid React node (elements, strings, numbers, etc.).
 }>) {
   return (
     <html
-      lang="en"    >
+      lang="en">
       <body className="min-h-full flex flex-col">
-        
-      <h1>Navbar menu</h1>
+      <Navbar/>
         {children}</body>
     </html>
   );
