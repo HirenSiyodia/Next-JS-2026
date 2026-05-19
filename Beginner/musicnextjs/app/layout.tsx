@@ -20,15 +20,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{  //this is a typescript.
+}: Readonly<{
+  //this is a typescript.
   children: React.ReactNode; //React type for the children prop, which can be any valid React node (elements, strings, numbers, etc.).
 }>) {
   return (
-    <html
-      lang="en">
+    <html lang="en">
       <body className="min-h-full flex flex-col">
-      <Navbar/>
-        {children}</body>
+        <div className="relative w-full flex items-center justify-center">
+          <Navbar />
+        </div>
+        {children}
+      </body>
     </html>
   );
 }
