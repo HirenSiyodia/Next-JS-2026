@@ -27,13 +27,22 @@ function FeaturedCourses() {
       {/* Heading */}
       <div className='text-center mb-14'>
 
-        <h2 className='text-4xl md:text-5xl font-bold text-white mb-4'>
-          Featured Courses
-        </h2>
+        <div className="text-center space-y-4">
+  <h2 className="text-sm sm:text-base font-semibold tracking-[0.25em] uppercase text-cyan-400">
+    Featured Courses
+  </h2>
 
-        <p className='text-gray-400 text-lg'>
-          Explore our most popular music courses
-        </p>
+  <p className="text-3xl sm:text-5xl font-bold leading-tight text-white">
+    Explore Our
+    <span className="bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+      {" "}Most Popular Music Courses
+    </span>
+  </p>
+
+  <p className="text-gray-400 text-sm sm:text-lg max-w-2xl mx-auto">
+    Master instruments, vocals, production, and music theory with expertly crafted lessons.
+  </p>
+</div>
 
       </div>
 
