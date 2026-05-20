@@ -24,7 +24,7 @@ function HeroSection() {
           experiences.
         </p>
         <div className="mt-8">
-          <Link href={"/courses"}>
+          <Link href={"/course"}>
             <Button
               borderRadius="1.75rem"
               className="bg-[#1f1f1f] text-white border-none hover:bg-[#2a2a2a] transition-all duration-300"

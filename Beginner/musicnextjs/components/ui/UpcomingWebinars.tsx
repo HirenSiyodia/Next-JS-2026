@@ -86,7 +86,7 @@ function UpcomingWebinars() {
 />
         </div>
         <div className="text-center mt-10">
-            <Link href={'/'} className='inline-block px-8 py-4 rounded-full bg-white text-black font-semibold hover:bg-gray-200 transition duration-300 shadow-lg'>
+            <Link href={'/course'} className='inline-block px-8 py-4 rounded-full bg-white text-black font-semibold hover:bg-gray-200 transition duration-300 shadow-lg'>
                 View All Webinars
             </Link>
         </div>
