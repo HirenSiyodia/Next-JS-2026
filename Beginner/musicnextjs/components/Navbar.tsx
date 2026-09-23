@@ -1,36 +1,118 @@
-'use client';
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
 
-import React, { useState } from "react";
-import { HoveredLink, Menu, MenuItem, ProductItem } from "./ui/navbar-menu";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+const transition = {
+  type: "spring" as const,
+  mass: 0.5,
+  damping: 11.5,
+  stiffness: 100,
+  restDelta: 0.001,
+  restSpeed: 0.001,
+};
 
-function Navbar({ className }: { className?: string }) {
-  const [active, setActive] = useState<string | null>(null);
-
+export const MenuItem = ({
+  setActive,
+  active,
+  item,
+  children,
+}: {
+  setActive: (item: string) => void;
+  active: string | null;
+  item: string;
+  children?: React.ReactNode;
+}) => {
   return (
-    <div className={cn("fixed top-4 sm:top-10 inset-x-0 max-w-2xl mx-auto z-50", className)}>
-      <Menu setActive={setActive}>
-        <Link href={"/"}>
-        <MenuItem setActive={setActive} active={active} item="Home" >
-        </MenuItem>
-        </Link>
-        <MenuItem  setActive={setActive} active={active} item="Our Courses" >
-        <div className="flex flex-col space-y-4 text-sm max-w-[calc(100vw-3rem)]">
-          <HoveredLink href="/course">All Courses</HoveredLink>
-          <HoveredLink href="/#">Basic Music Theory</HoveredLink>
-          <HoveredLink href="/#">Advanced Composition</HoveredLink>
-          <HoveredLink href="/#">SongWriting</HoveredLink>
-          <HoveredLink href="/#">Music Production</HoveredLink>
-        </div>
-        </MenuItem>
-        <Link href="/contact">
-        <MenuItem setActive={setActive} active={active} item="Contact Us" >
-        </MenuItem>
-        </Link>
-      </Menu>
+    <div onMouseEnter={() => setActive(item)} className="relative ">
+      <motion.p
+        transition={{ duration: 0.3 }}
+        className="cursor-pointer text-black hover:opacity-[0.9] dark:text-white"
+      >
+        {item}
+      </motion.p>
+      {active !== null && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={transition}
+        >
+          {active === item && children && (
+            <div className="absolute top-[calc(100%+1.2rem)] left-1/2 transform -translate-x-1/2 pt-4">
+              <motion.div
+                transition={transition}
+                layoutId="active" // layoutId ensures smooth animation
+                className="bg-white dark:bg-black backdrop-blur-sm rounded-2xl overflow-hidden border border-black/20 dark:border-white/20 shadow-xl"
+              >
+                <motion.div
+                  layout // layout ensures smooth animation
+                  className="w-max h-full p-4"
+                >
+                  {children}
+                </motion.div>
+              </motion.div>
+            </div>
+          )}
+        </motion.div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export const Menu = ({
+  setActive,
+  children,
+}: {
+  setActive: (item: string | null) => void;
+  children: React.ReactNode;
+}) => {
+  return (
+    <nav
+      onMouseLeave={() => setActive(null)} // resets the state
+className="relative rounded-full bg-[#222222] text-white shadow-xl flex justify-center space-x-4 px-8 py-6"    >
+      {children}
+    </nav>
+  );
+};
+
+export const ProductItem = ({
+  title,
+  description,
+  href,
+  src,
+}: {
+  title: string;
+  description: string;
+  href: string;
+  src: string;
+}) => {
+  return (
+    <a href={href} className="flex space-x-2">
+      <img
+        src={src}
+        width={140}
+        height={70}
+        alt={title}
+        className="shrink-0 rounded-md shadow-2xl"
+      />
+      <div>
+        <h4 className="text-xl font-bold mb-1 text-black dark:text-white">
+          {title}
+        </h4>
+        <p className="text-neutral-700 text-sm max-w-40 dark:text-neutral-300">
+          {description}
+        </p>
+      </div>
+    </a>
+  );
+};
+
+export const HoveredLink = ({ children, ...rest }: any) => {
+  return (
+    <a
+      {...rest}
+      className="text-neutral-500 dark:text-neutral-200 hover:text-gray-500 dark:hover:text-gray-400"
+    >
+      {children}
+    </a>
+  );
+};
