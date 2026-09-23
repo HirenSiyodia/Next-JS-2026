@@ -1,118 +1,197 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
 
-const transition = {
-  type: "spring" as const,
-  mass: 0.5,
-  damping: 11.5,
-  stiffness: 100,
-  restDelta: 0.001,
-  restSpeed: 0.001,
-};
+import React, { useState } from "react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { Menu, X, ChevronDown } from "lucide-react";
 
-export const MenuItem = ({
-  setActive,
-  active,
-  item,
-  children,
-}: {
-  setActive: (item: string) => void;
-  active: string | null;
-  item: string;
-  children?: React.ReactNode;
-}) => {
+function Navbar({ className }: { className?: string }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [coursesOpen, setCoursesOpen] = useState(false);
+
+  const closeMobileMenu = () => {
+    setMobileOpen(false);
+    setCoursesOpen(false);
+  };
+
   return (
-    <div onMouseEnter={() => setActive(item)} className="relative ">
-      <motion.p
-        transition={{ duration: 0.3 }}
-        className="cursor-pointer text-black hover:opacity-[0.9] dark:text-white"
-      >
-        {item}
-      </motion.p>
-      {active !== null && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={transition}
-        >
-          {active === item && children && (
-            <div className="absolute top-[calc(100%+1.2rem)] left-1/2 transform -translate-x-1/2 pt-4">
-              <motion.div
-                transition={transition}
-                layoutId="active" // layoutId ensures smooth animation
-                className="bg-white dark:bg-black backdrop-blur-sm rounded-2xl overflow-hidden border border-black/20 dark:border-white/20 shadow-xl"
-              >
-                <motion.div
-                  layout // layout ensures smooth animation
-                  className="w-max h-full p-4"
-                >
-                  {children}
-                </motion.div>
-              </motion.div>
-            </div>
-          )}
-        </motion.div>
+    <div
+      className={cn(
+        "fixed top-4 sm:top-10 inset-x-0 w-[calc(100%-2rem)] max-w-2xl mx-auto z-50",
+        className
       )}
+    >
+      {/* Desktop Navbar */}
+      <nav className="hidden md:flex items-center justify-center gap-6 rounded-full bg-[#222222] px-8 py-5 text-white shadow-xl">
+        <Link
+          href="/"
+          className="cursor-pointer transition-opacity hover:opacity-70"
+        >
+          Home
+        </Link>
+
+        <div className="relative group">
+          <button className="cursor-pointer transition-opacity hover:opacity-70">
+            Our Courses
+          </button>
+
+          {/* Courses Dropdown */}
+          <div className="absolute left-1/2 top-full hidden -translate-x-1/2 pt-5 group-hover:block">
+            <div className="w-56 rounded-2xl border border-white/20 bg-black p-5 shadow-xl">
+              <div className="flex flex-col space-y-4 text-sm">
+                <Link
+                  href="/course"
+                  className="text-neutral-300 transition-colors hover:text-white"
+                >
+                  All Courses
+                </Link>
+
+                <Link
+                  href="/#"
+                  className="text-neutral-300 transition-colors hover:text-white"
+                >
+                  Basic Music Theory
+                </Link>
+
+                <Link
+                  href="/#"
+                  className="text-neutral-300 transition-colors hover:text-white"
+                >
+                  Advanced Composition
+                </Link>
+
+                <Link
+                  href="/#"
+                  className="text-neutral-300 transition-colors hover:text-white"
+                >
+                  SongWriting
+                </Link>
+
+                <Link
+                  href="/#"
+                  className="text-neutral-300 transition-colors hover:text-white"
+                >
+                  Music Production
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Link
+          href="/contact"
+          className="cursor-pointer transition-opacity hover:opacity-70"
+        >
+          Contact Us
+        </Link>
+      </nav>
+
+      {/* Mobile Navbar */}
+      <nav className="md:hidden rounded-2xl bg-[#222222] text-white shadow-xl">
+        {/* Mobile Header */}
+        <div className="flex items-center justify-between px-5 py-4">
+          <Link
+            href="/"
+            onClick={closeMobileMenu}
+            className="font-semibold"
+          >
+            Home
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle navigation menu"
+            className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-white/10"
+          >
+            {mobileOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileOpen && (
+          <div className="border-t border-white/10 px-5 py-4">
+            <div className="flex flex-col gap-4">
+              {/* Courses */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setCoursesOpen(!coursesOpen)}
+                  className="flex w-full items-center justify-between text-left text-sm"
+                >
+                  <span>Our Courses</span>
+
+                  <ChevronDown
+                    className={cn(
+                      "h-4 w-4 transition-transform duration-300",
+                      coursesOpen && "rotate-180"
+                    )}
+                  />
+                </button>
+
+                {coursesOpen && (
+                  <div className="mt-4 ml-3 flex flex-col gap-3 border-l border-white/20 pl-4 text-sm">
+                    <Link
+                      href="/course"
+                      onClick={closeMobileMenu}
+                      className="text-neutral-300 transition-colors hover:text-white"
+                    >
+                      All Courses
+                    </Link>
+
+                    <Link
+                      href="/#"
+                      onClick={closeMobileMenu}
+                      className="text-neutral-300 transition-colors hover:text-white"
+                    >
+                      Basic Music Theory
+                    </Link>
+
+                    <Link
+                      href="/#"
+                      onClick={closeMobileMenu}
+                      className="text-neutral-300 transition-colors hover:text-white"
+                    >
+                      Advanced Composition
+                    </Link>
+
+                    <Link
+                      href="/#"
+                      onClick={closeMobileMenu}
+                      className="text-neutral-300 transition-colors hover:text-white"
+                    >
+                      SongWriting
+                    </Link>
+
+                    <Link
+                      href="/#"
+                      onClick={closeMobileMenu}
+                      className="text-neutral-300 transition-colors hover:text-white"
+                    >
+                      Music Production
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Contact */}
+              <Link
+                href="/contact"
+                onClick={closeMobileMenu}
+                className="text-sm"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        )}
+      </nav>
     </div>
   );
-};
+}
 
-export const Menu = ({
-  setActive,
-  children,
-}: {
-  setActive: (item: string | null) => void;
-  children: React.ReactNode;
-}) => {
-  return (
-    <nav
-      onMouseLeave={() => setActive(null)} // resets the state
-className="relative rounded-full bg-[#222222] text-white shadow-xl flex justify-center space-x-4 px-8 py-6"    >
-      {children}
-    </nav>
-  );
-};
-
-export const ProductItem = ({
-  title,
-  description,
-  href,
-  src,
-}: {
-  title: string;
-  description: string;
-  href: string;
-  src: string;
-}) => {
-  return (
-    <a href={href} className="flex space-x-2">
-      <img
-        src={src}
-        width={140}
-        height={70}
-        alt={title}
-        className="shrink-0 rounded-md shadow-2xl"
-      />
-      <div>
-        <h4 className="text-xl font-bold mb-1 text-black dark:text-white">
-          {title}
-        </h4>
-        <p className="text-neutral-700 text-sm max-w-40 dark:text-neutral-300">
-          {description}
-        </p>
-      </div>
-    </a>
-  );
-};
-
-export const HoveredLink = ({ children, ...rest }: any) => {
-  return (
-    <a
-      {...rest}
-      className="text-neutral-500 dark:text-neutral-200 hover:text-gray-500 dark:hover:text-gray-400"
-    >
-      {children}
-    </a>
-  );
-};
+export default Navbar;
